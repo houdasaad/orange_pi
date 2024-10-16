@@ -13,7 +13,6 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # usar solo CPU para TensorFlow Lite
 tf.get_logger().setLevel('ERROR')
 
 from mcunet.utils.det_helper import MergeNMS, Yolo3Output
-from mcunet.model_zoo import download_tflite
 
 def get_model_info(tflite_path):
     interpreter = tf.lite.Interpreter(tflite_path)
@@ -85,16 +84,11 @@ def record_video(filename, duration=300, fps=30, resolution=(128, 160)):
         if ret:
             frame = cv2.resize(frame, (resolution[1], resolution[0]))
             out.write(frame)
-            # No mostramos el frame para evitar consumo adicional de recursos
-            # cv2.imshow('Recording', frame)
-            # if cv2.waitKey(1) & 0xFF == ord('q'):
-            #     break
         else:
             break
 
     cap.release()
     out.release()
-    # cv2.destroyAllWindows()
     print(f"Video grabado como '{filename}' con resolución {resolution[1]}x{resolution[0]}")
     return video_path
 
@@ -177,7 +171,14 @@ def process_video(video_path, interpreter_path, resolution, result_queue, camera
     })
 
 def main():
-    tflite_path = download_tflite(net_id="person-det")
+    # Cambiamos la ruta del modelo para que apunte al archivo correcto
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    tflite_path = os.path.join(current_dir, 'assets', 'person-det.tflite')  # Cambiamos 'person_det.tflite' a 'person-det.tflite'
+    
+    if not os.path.exists(tflite_path):
+        print(f"Error: El archivo {tflite_path} no existe.")
+        print("Por favor, asegúrese de que el archivo 'person-det.tflite' está en la carpeta mcunet/assets/")
+        return
 
     precision, model_size, num_tensors = get_model_info(tflite_path)
 
