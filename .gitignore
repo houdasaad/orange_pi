@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+env_orange
 
 # Spyder project settings
 .spyderproject
@@ -158,3 +159,28 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
+*.avi
+*.mp4
+*.jpg
+*.png
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.webp
+
+*.tflite
+*.pt
+*.tflite
+*.pt
+*.tflite
+*.pt
+*.tflite
+*.pt
+*.tflite
+*.pt
+*.tflite
+input_video*
+*.csv
+
+
